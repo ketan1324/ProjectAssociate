@@ -78,9 +78,7 @@ const InteriorDataSchema = new mongoose.Schema({
   Elevation_4: {
     type: String
   },
-  All_Elevation: {
-    type: String
-  },
+ 
   ThreeD_Model_1: {
     type: String
   },
@@ -111,75 +109,75 @@ const InteriorDataSchema = new mongoose.Schema({
   Celling_Layout_2: {
     type: String
   },
- Celling_Layout_3: {
-       type: String
-  },
-  Celling_Layout_4: {
-    type: String
-  },
-  PlumbingDetails_1: {
-    type: String
-  },
-  PlumbingDetails_2: {
-    type: String
-  },
-  Flooring_Details_1: {
-    type: String
-  },
- Flooring_Details_2: {
-    type: String
-  },
- Furniture_Details_1: {
-    type: String
-  },
-Furniture_Details_2: {
-    type: String
-  },
-Furniture_Details_3: {
-    type: String
-  },
-Furniture_Details_4: {
-    type: String
-  },
-Furniture_Details_5: {
-    type: String
-  },
+//  Celling_Layout_3: {
+//        type: String
+//   },
+//   Celling_Layout_4: {
+//     type: String
+//   },
+//   PlumbingDetails_1: {
+//     type: String
+//   },
+//   PlumbingDetails_2: {
+//     type: String
+//   },
+//   Flooring_Details_1: {
+//     type: String
+//   },
+//  Flooring_Details_2: {
+//     type: String
+//   },
+//  Furniture_Details_1: {
+//     type: String
+//   },
+// Furniture_Details_2: {
+//     type: String
+//   },
+// Furniture_Details_3: {
+//     type: String
+//   },
+// Furniture_Details_4: {
+//     type: String
+//   },
+// Furniture_Details_5: {
+//     type: String
+//   },
 
-Laminator_Venner_1: {
-    type: String
-  },
-Laminator_Venner_2: {
-    type: String
-  },
-Handles_Hardware_1: {
-    type: String
-  },
-Handles_Hardware_2: {
-    type: String
-  },
-Curtains_1: {
-    type: String
-  },
-Curtains_2: {
-    type: String
-  },
-Flooring_Details_1: {
-    type: String
-  },
+// Laminator_Venner_1: {
+//     type: String
+//   },
+// Laminator_Venner_2: {
+//     type: String
+//   },
+// Handles_Hardware_1: {
+//     type: String
+//   },
+// Handles_Hardware_2: {
+//     type: String
+//   },
+// Curtains_1: {
+//     type: String
+//   },
+// Curtains_2: {
+//     type: String
+//   },
+// Flooring_Details_1: {
+//     type: String
+//   },
 
-Flooring_Details_2: {
-    type: String
-  },
+// Flooring_Details_2: {
+//     type: String
+//   },
 
-Plumbing_Details_1: {
-    type: String
-  },
-Plumbing_Details_2: {
-    type: String
-  },
-Plumbing_Details_3: {
-    type: String
-  },
+// Plumbing_Details_1: {
+//     type: String
+//   },
+// Plumbing_Details_2: {
+//     type: String
+//   },
+// Plumbing_Details_3: {
+//     type: String
+//   },
 
 });
 InteriorDataSchema.pre('save', async function (next) {

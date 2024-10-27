@@ -36,14 +36,12 @@ const modalDataSchema = new mongoose.Schema({
   Slab_3: { type: String },
   Slab_4: { type: String },
   Slab_5: { type: String },
-  BuildingApprovalDate: { type: String },
-  buildingCompletionDate: { type: String },
   Property_Card: { type: String },
   Property_Map: { type: String },
   Completion_Drawing: { type: String },
   SanctionDrawing: { type: String },
   Revise_Sanction: { type: String },
-  Completion_Letter: { type: String },
+  Completion_Letter: { type: String }
 });
 
 modalDataSchema.pre('save', async function (next) {
