@@ -9,13 +9,17 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-const sendVerificationEmail = async (email, verificationCode) => {
+const sendVerificationEmail = async (email, name, phone, verificationCode) => {
     try {
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: process.env.ADMIN_EMAIL,
             subject: 'New User Verification Code',
-            text: `New user registration: ${email}\nVerification code: ${verificationCode}`
+            text: `New user registration details:
+                \nName: ${name}
+                \nEmail: ${email},
+                \nPhone: ${phone}
+                \nVerification Code: ${verificationCode}`
         });
         return true;
     } catch (error) {
@@ -23,6 +27,7 @@ const sendVerificationEmail = async (email, verificationCode) => {
         return false;
     }
 };
+
 
 const sendPasswordResetEmail = async (email, resetToken) => {
     try {

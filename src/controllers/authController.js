@@ -23,7 +23,7 @@ const signup = async (req, res) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { name, email, dob, password, address } = req.body;
+        const { name, email, dob, phone, password, address } = req.body;
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -37,13 +37,14 @@ const signup = async (req, res) => {
             name,
             email,
             dob,
+            phone,
             password: hashedPassword,
             address,
             verificationCode
         });
 
         await user.save();
-        await sendVerificationEmail(email, verificationCode);
+        await sendVerificationEmail(email, name, phone, verificationCode);
 
         res.status(201).json({ 
             message: 'User registered successfully. Awaiting verification.' 
@@ -205,6 +206,59 @@ const resetPassword = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, dob, phone, address } = req.body;
+
+        // Find the user by ID
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update fields if provided in request body
+        if (name) user.name = name;
+        if (dob) user.dob = dob;
+        if (phone) user.phone = phone;
+        if (address) user.address = address;
+
+        await user.save();
+
+        res.json({
+            message: 'User updated successfully',
+            user: {
+                id: user._id,
+                name: user.name,
+                dob: user.dob,
+                phone: user.phone,
+                address: user.address,
+                email: user.email,
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Delete user function
+const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        await user.remove();
+
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 module.exports = {
     signup,
@@ -213,4 +267,6 @@ module.exports = {
     forgotPassword,
     resetPassword,
     getUsers,
+    updateUser,
+    deleteUser,
 };
