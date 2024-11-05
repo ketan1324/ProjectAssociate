@@ -182,47 +182,52 @@ const handleMulterError = (err, req, res, next) => {
     next(err);
 };
 const updateInteriorData = async (req, res) => {
-  try {
+    try {
       const { id } = req.params;
-
+  
       // Find the existing document
       const existingData = await InteriorData.findById(id);
-      if (!existingData) {
-          return res.status(404).json({ success: false, error: 'Record not found' });
+      if (!existingData) { 
+        return res.status(404).json({ success: false, error: 'Record not found' });
       }
-
-      // Update properties and files if provided
+  
+      // Prepare the update data, adding a new timestamp
       const updateData = { ...req.body, updatedAt: new Date() };
+  
+      // Process each file in the request
       const uploadPromises = Object.entries(req.files || {}).map(async ([fieldName, files]) => {
-          const file = files[0];
-
-          // Upload new file to S3
-          const fileUrl = await uploadToS3(file, 'interior-uploads');
-          updateData[fieldName] = fileUrl;
-
-          // Optionally, delete the old file from S3
-          const oldUrl = existingData[fieldName];
-          if (oldUrl) {
-              const oldKey = oldUrl.split(`${BUCKET_NAME}/`)[1];
-              await s3.deleteObject({ Bucket: BUCKET_NAME, Key: oldKey }).promise();
+        const file = files[0];
+  
+        // Upload new file to S3
+        const fileUrl = await uploadToS3(file, 'interior-uploads');
+        updateData[fieldName] = fileUrl;
+  
+        // Delete the old file from S3 if it exists
+        const oldUrl = existingData[fieldName];
+        if (oldUrl) {
+          const oldKey = oldUrl.split(`${BUCKET_NAME}/`)[1];
+          if (oldKey) {
+            await s3.deleteObject({ Bucket: BUCKET_NAME, Key: oldKey }).promise();
           }
+        }
       });
-
+  
       await Promise.all(uploadPromises);
-
-      // Update the database
+  
+      // Update the document in the database
       const updatedInteriorData = await InteriorData.findByIdAndUpdate(id, updateData, { new: true });
-
+  
       res.status(200).json({
-          success: true,
-          message: 'Update successful',
-          data: updatedInteriorData
+        success: true,
+        message: 'Update successful',
+        data: updatedInteriorData
       });
-  } catch (error) {
+    } catch (error) {
       console.error('Server Error:', error);
       res.status(500).json({ success: false, error: 'Update failed', details: error.message });
-  }
-};
+    }
+  };
+  
 
 const deleteInteriorData = async (req, res) => {
     try {
